@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>com.hommin.security</groupId>
-            <artifactId>hommin-security-core</artifactId>
+            <artifactId>hommin-security-browser</artifactId>
             <version>${hommin.security.version}</version>
         </dependency>
         <dependency>
