@@ -1,7 +1,6 @@
 package com.hommin.security.browser;
 
 import com.hommin.security.browser.support.SimpleResponse;
-import com.hommin.security.core.properties.BrowserProperties;
 import com.hommin.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,16 +42,14 @@ public class BrowserSecurityController {
     public SimpleResponse requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
         if (savedRequest != null) {
-            // 若为json请求, 则返回json格式提示
             String redirectUrl = savedRequest.getRedirectUrl();
             log.info("引发的请求是:{}", redirectUrl);
             if(StringUtils.endsWithIgnoreCase(redirectUrl, HTML_SUFFIX)){
-                // 若从html请求, 则跳转到登录页面
+                // 若为html请求, 则跳转到登录页面
                 redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage() );
             }
-
-
         }
+        // 若为json请求, 则返回json格式提示
         return new SimpleResponse("访问的服务需要身份认证，请引导用户到登录页");
     }
 

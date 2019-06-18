@@ -14,3 +14,7 @@ security:
 
 server:
   port: 8060
+hommin:
+  security:
+    browser:
+      loginType: JSON
