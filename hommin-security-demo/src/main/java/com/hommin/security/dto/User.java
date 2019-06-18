@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hommin.security.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -11,7 +8,7 @@ import javax.validation.constraints.Past;
 import java.util.Date;
 
 /**
- * @author zhailiang
+ * @author Hommin
  *
  */
 public class User {

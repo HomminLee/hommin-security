@@ -1,10 +1,7 @@
-/**
- * 
- */
 package com.hommin.security.service;
 
 /**
- * @author zhailiang
+ * @author Hommin
  *
  */
 public interface HelloService {

@@ -1,10 +1,7 @@
-/**
- * 
- */
 package com.hommin.security.dto;
 
 /**
- * @author zhailiang
+ * @author Hommin
  *
  */
 public class FileInfo {

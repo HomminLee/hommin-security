@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hommin.security.web.config;
 
 import com.hommin.security.web.filter.TimeFilter;
@@ -15,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author zhailiang
+ * @author Hommin
  *
  */
 @Configuration

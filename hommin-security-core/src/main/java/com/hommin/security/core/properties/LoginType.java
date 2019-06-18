@@ -1,10 +1,7 @@
-/**
- * 
- */
 package com.hommin.security.core.properties;
 
 /**
- * @author zhailiang
+ * @author Hommin
  *
  */
 public enum LoginType {

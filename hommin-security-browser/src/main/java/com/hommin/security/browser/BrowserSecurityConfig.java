@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
- * @author zhailiang
+ * @author Hommin
  */
 @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {

@@ -1,13 +1,10 @@
-/**
- * 
- */
 package com.hommin.security.service.impl;
 
 import com.hommin.security.service.HelloService;
 import org.springframework.stereotype.Service;
 
 /**
- * @author zhailiang
+ * @author Hommin
  *
  */
 @Service

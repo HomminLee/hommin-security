@@ -1,12 +1,9 @@
-/**
- * 
- */
 package com.hommin.security.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * @author zhailiang
+ * @author Hommin
  *
  */
 public class UserQueryCondition {

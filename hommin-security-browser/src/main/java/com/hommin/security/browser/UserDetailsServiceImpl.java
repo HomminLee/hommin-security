@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.hommin.security.browser;
 
 import org.slf4j.Logger;
@@ -15,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
- * @author zhailiang
+ * @author Hommin
  */
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {

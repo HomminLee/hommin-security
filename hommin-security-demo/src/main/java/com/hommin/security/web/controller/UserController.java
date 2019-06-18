@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hommin.security.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -22,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author zhailiang
+ * @author Hommin
  *
  */
 @RestController
