@@ -8,11 +8,11 @@ import org.springframework.web.context.request.ServletWebRequest;
  * @author Hommin
  * 2019年06月19日 1:53 PM
  */
-public interface ValidateCodeGenerator {
+public interface ValidateCodeGenerator<V extends ValidateCode> {
     /**
      * 根据request生成ImageCode
-     * @param request
+     * @param request 请求
      * @return
      */
-    ImageCode generate(ServletWebRequest request);
+    V generate(ServletWebRequest request);
 }

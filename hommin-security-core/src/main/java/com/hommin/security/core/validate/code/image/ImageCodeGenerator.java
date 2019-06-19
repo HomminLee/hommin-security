@@ -1,6 +1,7 @@
-package com.hommin.security.core.validate.code;
+package com.hommin.security.core.validate.code.image;
 
 import com.hommin.security.core.properties.SecurityProperties;
+import com.hommin.security.core.validate.code.ValidateCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -15,7 +16,7 @@ import java.util.Random;
  * @author Hommin
  * 2019年06月19日 1:54 PM
  */
-public class DefaultValidateCodeGenerator implements ValidateCodeGenerator {
+public class ImageCodeGenerator implements ValidateCodeGenerator<ImageCode> {
 
     @Autowired
     private SecurityProperties securityProperties;

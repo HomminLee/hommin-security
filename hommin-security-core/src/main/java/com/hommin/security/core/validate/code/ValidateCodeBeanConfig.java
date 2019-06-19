@@ -1,5 +1,6 @@
 package com.hommin.security.core.validate.code;
 
+import com.hommin.security.core.validate.code.image.ImageCodeGenerator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,7 @@ public class ValidateCodeBeanConfig {
     @Bean
     @ConditionalOnMissingBean(name = "imageCodeGenerator")
     public ValidateCodeGenerator imageCodeGenerator(){
-        return new DefaultValidateCodeGenerator();
+        return new ImageCodeGenerator();
     }
 
 }
