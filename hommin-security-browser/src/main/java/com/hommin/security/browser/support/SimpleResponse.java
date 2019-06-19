@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hommin.security.browser.support;
 
 /**

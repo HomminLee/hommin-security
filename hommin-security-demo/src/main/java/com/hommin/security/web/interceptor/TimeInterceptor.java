@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hommin.security.web.interceptor;
 
 import org.springframework.stereotype.Component;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hommin.security.web.filter;
 
 import javax.servlet.*;

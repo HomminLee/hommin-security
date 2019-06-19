@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hommin.security.web.controller;
 
 import com.hommin.security.exception.UserNotExistException;

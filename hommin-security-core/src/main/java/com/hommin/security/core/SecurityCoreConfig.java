@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hommin.security.core;
 
 import com.hommin.security.core.properties.SecurityProperties;

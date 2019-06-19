@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hommin.security.browser.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

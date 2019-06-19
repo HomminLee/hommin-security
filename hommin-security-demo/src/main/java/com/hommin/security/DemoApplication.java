@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hommin.security;
 
 import org.springframework.boot.SpringApplication;
