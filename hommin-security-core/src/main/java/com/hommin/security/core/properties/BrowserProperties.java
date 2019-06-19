@@ -11,5 +11,7 @@ public class BrowserProperties {
 	private String loginPage = "/hommin-sign-in.html";
 
 	private LoginType loginType = LoginType.JSON;
+
+	private int rememberMeSeconds = 3600;
 	
 }
