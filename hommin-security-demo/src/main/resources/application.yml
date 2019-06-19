@@ -18,3 +18,8 @@ hommin:
   security:
     browser:
       loginType: JSON
+    code:
+      image:
+        length: 6
+        witeh: 100
+        url: /user/*
