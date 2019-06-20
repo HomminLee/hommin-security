@@ -32,7 +32,7 @@ public abstract class AbstractValidateCodeProcessor<V extends ValidateCode> impl
     @SuppressWarnings("unchecked")
     private V generate(ServletWebRequest request) {
         String type = getProcessorType(request).toLowerCase();
-        ValidateCodeGenerator generator = validateCodeGenerators.get(type + SecurityConst.VALIDATE_CODE_GENERATOR_SUFFIX);
+        ValidateCodeGenerator generator = validateCodeGenerators.get(type + ValidateCodeGenerator.class.getSimpleName());
         if (generator == null) {
             throw new RuntimeException("找不到名为[" + type + "CodeGenerator]的验证码生成器, 请检查你的验证码生成器名字是否正确");
         }
@@ -65,7 +65,7 @@ public abstract class AbstractValidateCodeProcessor<V extends ValidateCode> impl
      * @return 验证码对象
      */
     private String getProcessorType(ServletWebRequest request) {
-        return StringUtils.substringBefore(request.getRequest().getRequestURI(), SecurityConst.VALIDATE_CODE_PROCESSOR_SUFFIX).toLowerCase();
+        return StringUtils.substringBefore(request.getRequest().getRequestURI(), ValidateCodeProcessor.class.getSimpleName()).toLowerCase();
     }
 
 }

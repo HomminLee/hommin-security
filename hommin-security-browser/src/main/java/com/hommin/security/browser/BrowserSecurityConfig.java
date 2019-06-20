@@ -75,7 +75,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 登录配置
                 .formLogin()
                 .loginPage(SecurityConst.DEFAULT_LOGIN_UNAUTEHNTICATION_URL)
-                .loginProcessingUrl(SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_FROM)
+                .loginProcessingUrl(SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_FORM)
                 .successHandler(myAuthenticationSuccessHandler)
                 .failureHandler(myAuthenticationFailureHandler)
                 .and()
@@ -90,7 +90,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SecurityConst.DEFAULT_LOGIN_UNAUTEHNTICATION_URL
                         , SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_MOBILE
                         , securityProperties.getBrowser().getLoginPage()
-                        , SecurityConst.DEFAULT_VALIDATE_CODE_URL_PREFIX + "*")
+                        , SecurityConst.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

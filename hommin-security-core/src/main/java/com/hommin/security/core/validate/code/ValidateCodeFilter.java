@@ -50,7 +50,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         for (String url : urlArr) {
             urls.add(url);
         }
-        urls.add(SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_FROM);
+        urls.add(SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_FORM);
     }
 
     @Override

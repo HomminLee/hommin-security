@@ -16,7 +16,7 @@ import java.util.Random;
  * @author Hommin
  * 2019年06月19日 1:54 PM
  */
-public class ImageCodeGenerator implements ValidateCodeGenerator<ImageCode> {
+public class ImageValidateCodeGenerator implements ValidateCodeGenerator<ImageCode> {
 
     @Autowired
     private SecurityProperties securityProperties;

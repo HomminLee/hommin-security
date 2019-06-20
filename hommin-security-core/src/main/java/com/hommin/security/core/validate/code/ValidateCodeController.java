@@ -32,7 +32,7 @@ public class ValidateCodeController {
      */
     @GetMapping(SecurityConst.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/{type}")
     public void createCode(HttpServletRequest request, HttpServletResponse response, @PathVariable String type) throws Exception {
-        ValidateCodeProcessor processor = processors.get(type + SecurityConst.VALIDATE_CODE_GENERATOR_SUFFIX);
+        ValidateCodeProcessor processor = processors.get(type + ValidateCodeGenerator.class.getSimpleName());
         if (processor == null) {
             throw new RuntimeException("找不到名为[" + type + "CodeProcessor]的验证码执行器");
         }

@@ -1,7 +1,7 @@
 package com.hommin.security.core.validate.code;
 
-import com.hommin.security.core.validate.code.image.ImageCodeGenerator;
-import com.hommin.security.core.validate.code.sms.SmsCodeGenerator;
+import com.hommin.security.core.validate.code.image.ImageValidateCodeGenerator;
+import com.hommin.security.core.validate.code.sms.SmsValidateCodeGenerator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,14 +16,14 @@ import org.springframework.context.annotation.Configuration;
 public class ValidateCodeBeanConfig {
 
     @Bean
-    @ConditionalOnMissingBean(name = "imageCodeGenerator")
-    public ValidateCodeGenerator imageCodeGenerator(){
-        return new ImageCodeGenerator();
+    @ConditionalOnMissingBean(name = "imageValidateCodeGenerator")
+    public ValidateCodeGenerator imageValidateCodeGenerator(){
+        return new ImageValidateCodeGenerator();
     }
     @Bean
-    @ConditionalOnMissingBean(name = "smsCodeGenerator")
-    public ValidateCodeGenerator smsCodeGenerator(){
-        return new SmsCodeGenerator();
+    @ConditionalOnMissingBean(name = "smsValidateCodeGenerator")
+    public ValidateCodeGenerator smsValidateCodeGenerator(){
+        return new SmsValidateCodeGenerator();
     }
 
 }

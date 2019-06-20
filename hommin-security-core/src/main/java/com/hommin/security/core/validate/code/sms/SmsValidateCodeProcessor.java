@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
  */
 @Component("smsCodeProcessor")
 @Slf4j
-public class SmsCodeProcessor extends AbstractValidateCodeProcessor<SmsCode> {
+public class SmsValidateCodeProcessor extends AbstractValidateCodeProcessor<SmsCode> {
 
     @Override
     protected void sendValidateCode(ServletWebRequest request, SmsCode smsCode) throws Exception {

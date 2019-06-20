@@ -17,7 +17,7 @@ import java.util.Random;
  * @author Hommin
  * 2019年06月19日 1:54 PM
  */
-public class SmsCodeGenerator implements ValidateCodeGenerator<SmsCode> {
+public class SmsValidateCodeGenerator implements ValidateCodeGenerator<SmsCode> {
 
     @Autowired
     private SecurityProperties securityProperties;

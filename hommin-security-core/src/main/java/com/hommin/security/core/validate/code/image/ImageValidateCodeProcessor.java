@@ -15,7 +15,7 @@ import java.io.IOException;
  * 2019年06月19日 4:30 PM
  */
 @Component("imageCodeProcessor")
-public class ImageCodeProcessor extends AbstractValidateCodeProcessor<ImageCode> {
+public class ImageValidateCodeProcessor extends AbstractValidateCodeProcessor<ImageCode> {
 
     @Override
     protected void sendValidateCode(ServletWebRequest request, ImageCode imageCode) throws Exception {

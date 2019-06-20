@@ -10,7 +10,7 @@ public interface SecurityConst {
 
     String DEFAULT_LOGIN_UNAUTEHNTICATION_URL = "/authentication/require";
 
-    String DEFAULT_LOGIN_PROCESSING_URL_FROM = "/authentication/from";
+    String DEFAULT_LOGIN_PROCESSING_URL_FORM = "/authentication/form";
 
     String DEFAULT_LOGIN_PROCESSING_URL_MOBILE = "/authentication/mobile";
 
@@ -22,16 +22,6 @@ public interface SecurityConst {
      * 处理验证码url前缀
      */
     String DEFAULT_VALIDATE_CODE_URL_PREFIX = "/code";
-
-    /**
-     * 验证码组件-执行器-类名及实例名后缀
-     */
-    String VALIDATE_CODE_PROCESSOR_SUFFIX = "CodeProcessor";
-
-    /**
-     * 验证码组件-生成器-类名及实例名后缀
-     */
-    String VALIDATE_CODE_GENERATOR_SUFFIX = "CodeGenerator";
 
     /**
      * 验证图片验证码时，http请求中默认的携带图片验证码信息的参数的名称
