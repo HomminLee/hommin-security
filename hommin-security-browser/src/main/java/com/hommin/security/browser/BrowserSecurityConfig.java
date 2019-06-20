@@ -3,7 +3,9 @@
  */
 package com.hommin.security.browser;
 
+import com.hommin.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.hommin.security.core.properties.SecurityProperties;
+import com.hommin.security.core.validate.code.SmsCodeFilter;
 import com.hommin.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +40,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private DataSource dataSource;
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
@@ -52,32 +56,36 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    private ValidateCodeFilter validateCodeFilter;
+    @Autowired
+    private SmsCodeFilter smsCodeFilter;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
-        validateCodeFilter.setAuthenticationFailureHandler(myAuthenticationFailureHandler);
-        validateCodeFilter.setSecurityProperties(securityProperties);
-        validateCodeFilter.afterPropertiesSet();
-
-        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+        http
+                .apply(smsCodeAuthenticationSecurityConfig)
+                    .and()
+                .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
-                .loginPage("/authentication/require")
-                .loginProcessingUrl("/authentication/form")
-                .successHandler(myAuthenticationSuccessHandler)
-                .failureHandler(myAuthenticationFailureHandler)
-                .and()
+                    .loginPage("/authentication/require")
+                    .loginProcessingUrl("/authentication/form")
+                    .successHandler(myAuthenticationSuccessHandler)
+                    .failureHandler(myAuthenticationFailureHandler)
+                    .and()
                 .rememberMe()
-                .tokenRepository(persistentTokenRepository())
-                .userDetailsService(userDetailsService)
-                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-                .and()
+                    .tokenRepository(persistentTokenRepository())
+                    .userDetailsService(userDetailsService)
+                    .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                    .and()
                 .authorizeRequests()
-                .antMatchers("/authentication/require", securityProperties.getBrowser().getLoginPage(), "/code/image")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+                    .antMatchers("/authentication/require", "/authentication/mobile", securityProperties.getBrowser().getLoginPage(), "/code/*")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+                    .and()
                 .csrf().disable();
 
     }
