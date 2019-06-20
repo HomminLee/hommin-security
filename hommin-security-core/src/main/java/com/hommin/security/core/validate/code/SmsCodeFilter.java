@@ -1,5 +1,6 @@
 package com.hommin.security.core.validate.code;
 
+import com.hommin.security.core.properties.SecurityConst;
 import com.hommin.security.core.properties.SecurityProperties;
 import com.hommin.security.core.validate.code.image.ImageCode;
 import com.hommin.security.core.validate.code.sms.SmsCode;
@@ -52,7 +53,7 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
         for (String url : urlArr) {
             urls.add(url);
         }
-        urls.add("/authentication/mobile");
+        urls.add(SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_MOBILE);
     }
 
     @Override
@@ -81,11 +82,11 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
     }
 
     private void validate(ServletWebRequest request) throws ServletRequestBindingException {
-
+        String sessionKey = ValidateCodeProcessor.SESSION_KEY_PREFIX + "SMS";
         SmsCode codeInSession = (SmsCode) sessionStrategy.getAttribute(request,
-                ValidateCodeProcessor.SESSION_KEY_PREFIX + "SMS");
+                sessionKey);
 
-        String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "smsCode");
+        String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), SecurityConst.DEFAULT_PARAMETER_NAME_CODE_SMS);
 
         if (StringUtils.isBlank(codeInRequest)) {
             throw new ValidateCodeException("验证码的值不能为空");
@@ -96,7 +97,7 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
         }
 
         if (codeInSession.isExpried()) {
-            sessionStrategy.removeAttribute(request, ValidateCodeProcessor.SESSION_KEY_PREFIX + "SMS");
+            sessionStrategy.removeAttribute(request, sessionKey);
             throw new ValidateCodeException("验证码已过期");
         }
 
@@ -104,7 +105,7 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
             throw new ValidateCodeException("验证码不匹配");
         }
 
-        sessionStrategy.removeAttribute(request, ValidateCodeProcessor.SESSION_KEY_PREFIX + "SMS");
+        sessionStrategy.removeAttribute(request, sessionKey);
     }
 
 

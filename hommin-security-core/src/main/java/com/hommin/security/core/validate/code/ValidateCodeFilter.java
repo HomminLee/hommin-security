@@ -1,5 +1,6 @@
 package com.hommin.security.core.validate.code;
 
+import com.hommin.security.core.properties.SecurityConst;
 import com.hommin.security.core.properties.SecurityProperties;
 import com.hommin.security.core.validate.code.image.ImageCode;
 import lombok.Data;
@@ -49,7 +50,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         for (String url : urlArr) {
             urls.add(url);
         }
-        urls.add("/authentication/form");
+        urls.add(SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_FROM);
     }
 
     @Override
@@ -78,11 +79,11 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     }
 
     private void validate(ServletWebRequest request) throws ServletRequestBindingException {
-
+        String sessionKey = ValidateCodeProcessor.SESSION_KEY_PREFIX + "IMAGE";
         ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request,
-                ValidateCodeProcessor.SESSION_KEY_PREFIX + "IMAGE");
+                sessionKey);
 
-        String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "imageCode");
+        String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), SecurityConst.DEFAULT_PARAMETER_NAME_CODE_IMAGE);
 
         if (StringUtils.isBlank(codeInRequest)) {
             throw new ValidateCodeException("验证码的值不能为空");
@@ -93,7 +94,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         }
 
         if (codeInSession.isExpried()) {
-            sessionStrategy.removeAttribute(request, ValidateCodeProcessor.SESSION_KEY_PREFIX + "IMAGE");
+            sessionStrategy.removeAttribute(request, sessionKey);
             throw new ValidateCodeException("验证码已过期");
         }
 
@@ -101,7 +102,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
             throw new ValidateCodeException("验证码不匹配");
         }
 
-        sessionStrategy.removeAttribute(request, ValidateCodeProcessor.SESSION_KEY_PREFIX + "IMAGE");
+        sessionStrategy.removeAttribute(request, sessionKey);
     }
 
 

@@ -1,5 +1,7 @@
 package com.hommin.security.core.authentication.mobile;
 
+import com.hommin.security.core.properties.SecurityConst;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,21 +21,21 @@ import javax.servlet.http.HttpServletResponse;
 public class SmsCodeAuthenticationFilter extends
         AbstractAuthenticationProcessingFilter {
 
-    public static final String SPRING_SECURITY_FORM_MOBILE_KEY = "mobile";
+    public static final String SPRING_SECURITY_FORM_MOBILE_KEY = SecurityConst.DEFAULT_PARAMETER_NAME_MOBILE;
 
     private String mobileParameter = SPRING_SECURITY_FORM_MOBILE_KEY;
     private boolean postOnly = true;
 
 
     public SmsCodeAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/authentication/mobile", "POST"));
+        super(new AntPathRequestMatcher(SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, "POST"));
     }
 
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
-        if (postOnly && !request.getMethod().equals("POST")) {
+        if (postOnly && !HttpMethod.POST.toString().equals(request.getMethod())) {
             throw new AuthenticationServiceException(
                     "Authentication method not supported: " + request.getMethod());
         }

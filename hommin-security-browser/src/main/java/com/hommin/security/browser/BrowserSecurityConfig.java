@@ -4,6 +4,7 @@
 package com.hommin.security.browser;
 
 import com.hommin.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.hommin.security.core.properties.SecurityConst;
 import com.hommin.security.core.properties.SecurityProperties;
 import com.hommin.security.core.validate.code.SmsCodeFilter;
 import com.hommin.security.core.validate.code.ValidateCodeFilter;
@@ -36,6 +37,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationSuccessHandler myAuthenticationSuccessHandler;
     @Autowired
     private AuthenticationFailureHandler myAuthenticationFailureHandler;
+    @SuppressWarnings("all")
     @Autowired
     private DataSource dataSource;
     @Autowired
@@ -45,9 +47,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
+        // 只有初次使用: tokenRepository.setCreateTableOnStartup(true)
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
-        // 只有初次使用: tokenRepository.setCreateTableOnStartup(true)
         return tokenRepository;
     }
 
@@ -63,29 +65,37 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http
+                // 添加额外的config
                 .apply(smsCodeAuthenticationSecurityConfig)
-                    .and()
+                .and()
+                // 添加filter
                 .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                // 登录配置
                 .formLogin()
-                    .loginPage("/authentication/require")
-                    .loginProcessingUrl("/authentication/form")
-                    .successHandler(myAuthenticationSuccessHandler)
-                    .failureHandler(myAuthenticationFailureHandler)
-                    .and()
+                .loginPage(SecurityConst.DEFAULT_LOGIN_UNAUTEHNTICATION_URL)
+                .loginProcessingUrl(SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_FROM)
+                .successHandler(myAuthenticationSuccessHandler)
+                .failureHandler(myAuthenticationFailureHandler)
+                .and()
+                // remember me
                 .rememberMe()
-                    .tokenRepository(persistentTokenRepository())
-                    .userDetailsService(userDetailsService)
-                    .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-                    .and()
+                .tokenRepository(persistentTokenRepository())
+                .userDetailsService(userDetailsService)
+                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                .and()
+                // 路径登录要求配置
                 .authorizeRequests()
-                    .antMatchers("/authentication/require", "/authentication/mobile", securityProperties.getBrowser().getLoginPage(), "/code/*")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-                    .and()
+                .antMatchers(SecurityConst.DEFAULT_LOGIN_UNAUTEHNTICATION_URL
+                        , SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_MOBILE
+                        , securityProperties.getBrowser().getLoginPage()
+                        , SecurityConst.DEFAULT_VALIDATE_CODE_URL_PREFIX + "*")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                // csrf
                 .csrf().disable();
 
     }

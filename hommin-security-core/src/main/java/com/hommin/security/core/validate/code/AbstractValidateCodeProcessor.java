@@ -1,11 +1,11 @@
 package com.hommin.security.core.validate.code;
 
+import com.hommin.security.core.properties.SecurityConst;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -32,7 +32,7 @@ public abstract class AbstractValidateCodeProcessor<V extends ValidateCode> impl
     @SuppressWarnings("unchecked")
     private V generate(ServletWebRequest request) {
         String type = getProcessorType(request).toLowerCase();
-        ValidateCodeGenerator generator = validateCodeGenerators.get(type + "CodeGenerator");
+        ValidateCodeGenerator generator = validateCodeGenerators.get(type + SecurityConst.VALIDATE_CODE_GENERATOR_SUFFIX);
         if (generator == null) {
             throw new RuntimeException("找不到名为[" + type + "CodeGenerator]的验证码生成器, 请检查你的验证码生成器名字是否正确");
         }
@@ -65,7 +65,7 @@ public abstract class AbstractValidateCodeProcessor<V extends ValidateCode> impl
      * @return 验证码对象
      */
     private String getProcessorType(ServletWebRequest request) {
-        return StringUtils.substringAfter(request.getRequest().getRequestURI(), "/code/");
+        return StringUtils.substringBefore(request.getRequest().getRequestURI(), SecurityConst.VALIDATE_CODE_PROCESSOR_SUFFIX).toLowerCase();
     }
 
 }

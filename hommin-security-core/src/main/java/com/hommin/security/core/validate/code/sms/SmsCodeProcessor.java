@@ -1,5 +1,6 @@
 package com.hommin.security.core.validate.code.sms;
 
+import com.hommin.security.core.properties.SecurityConst;
 import com.hommin.security.core.validate.code.AbstractValidateCodeProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ public class SmsCodeProcessor extends AbstractValidateCodeProcessor<SmsCode> {
 
     @Override
     protected void sendValidateCode(ServletWebRequest request, SmsCode smsCode) throws Exception {
-        String mobile = ServletRequestUtils.getStringParameter(request.getRequest(), "mobile");
+        String mobile = ServletRequestUtils.getStringParameter(request.getRequest(), SecurityConst.DEFAULT_PARAMETER_NAME_MOBILE);
         // 发送验证码
         log.info("向手机号{}发送短信验证码, code={}", mobile, smsCode.getCode());
     }
