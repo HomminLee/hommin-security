@@ -7,15 +7,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import javax.imageio.ImageIO;
-
 /**
  * 图形验证码处理器
  *
  * @author Hommin
  * 2019年06月19日 4:30 PM
  */
-@Component("smsCodeProcessor")
+@Component("smsValidateCodeProcessor")
 @Slf4j
 public class SmsValidateCodeProcessor extends AbstractValidateCodeProcessor<SmsCode> {
 

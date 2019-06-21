@@ -1,12 +1,10 @@
 package com.hommin.security.core.validate.code.image;
 
 import com.hommin.security.core.validate.code.AbstractValidateCodeProcessor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.imageio.ImageIO;
-import java.io.IOException;
 
 /**
  * 图形验证码处理器
@@ -14,7 +12,7 @@ import java.io.IOException;
  * @author Hommin
  * 2019年06月19日 4:30 PM
  */
-@Component("imageCodeProcessor")
+@Component("imageValidateCodeProcessor")
 public class ImageValidateCodeProcessor extends AbstractValidateCodeProcessor<ImageCode> {
 
     @Override

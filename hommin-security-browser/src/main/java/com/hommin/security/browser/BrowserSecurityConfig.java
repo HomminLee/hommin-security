@@ -6,7 +6,6 @@ package com.hommin.security.browser;
 import com.hommin.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.hommin.security.core.properties.SecurityConst;
 import com.hommin.security.core.properties.SecurityProperties;
-import com.hommin.security.core.validate.code.SmsCodeFilter;
 import com.hommin.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -60,8 +59,6 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private ValidateCodeFilter validateCodeFilter;
-    @Autowired
-    private SmsCodeFilter smsCodeFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -70,7 +67,6 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .apply(smsCodeAuthenticationSecurityConfig)
                 .and()
                 // 添加filter
-                .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 // 登录配置
                 .formLogin()
