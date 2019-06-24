@@ -86,7 +86,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SecurityConst.DEFAULT_LOGIN_UNAUTEHNTICATION_URL
                         , SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_MOBILE
                         , securityProperties.getBrowser().getLoginPage()
-                        , SecurityConst.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*")
+                        , SecurityConst.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"
+                        , "/auth/*", "/connect/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
