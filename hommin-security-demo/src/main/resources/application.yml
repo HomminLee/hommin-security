@@ -13,7 +13,7 @@ security:
     enabled: false
 
 server:
-  port: 8060
+  port: 80
 hommin:
   security:
     browser:
@@ -27,3 +27,5 @@ hommin:
       qq:
         app-id: 100550231
         app-secret: 69b6ab57b22f3c2fe6a6149274e3295e
+        filter-processes-url: /qqLogin
+        provider-id: callback.do

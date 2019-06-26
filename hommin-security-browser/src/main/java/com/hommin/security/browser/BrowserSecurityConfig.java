@@ -93,7 +93,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                         , SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_MOBILE
                         , securityProperties.getBrowser().getLoginPage()
                         , SecurityConst.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"
-                        , "/auth/*", "/connect/*")
+                        , "/auth/*"
+                        , securityProperties.getSocial().getQq().getFilterProcessesUrl() + "/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
