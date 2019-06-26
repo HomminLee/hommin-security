@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -43,6 +44,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+    @Autowired
+    private SpringSocialConfigurer homminSocialSecurityConfig;
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
@@ -65,6 +68,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // 添加额外的config
                 .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+                // social config
+                .apply(homminSocialSecurityConfig)
                 .and()
                 // 添加filter
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
