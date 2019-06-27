@@ -16,4 +16,6 @@ public class QQProperties extends SocialProperties {
 
     private String filterProcessesUrl = "/auth";
 
+    private String signUpUrl = "/hommin-sign-up.html";
+
 }

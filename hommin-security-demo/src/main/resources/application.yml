@@ -29,3 +29,4 @@ hommin:
         app-secret: 69b6ab57b22f3c2fe6a6149274e3295e
         filter-processes-url: /qqLogin
         provider-id: callback.do
+        sign-up-url: /demo-sign-up.html

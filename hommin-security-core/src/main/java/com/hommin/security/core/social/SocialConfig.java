@@ -2,6 +2,7 @@ package com.hommin.security.core.social;
 
 import com.hommin.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.encrypt.Encryptors;
@@ -11,6 +12,7 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
@@ -44,7 +46,14 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	public SpringSocialConfigurer homminSocialSecurityConfig() {
 		String filterProcessesUrl = securityProperties.getSocial().getQq().getFilterProcessesUrl();
 		HomminSpringSocialConfigurer configurer = new HomminSpringSocialConfigurer(filterProcessesUrl);
+		configurer.signupUrl(securityProperties.getSocial().getQq().getSignUpUrl());
 		return configurer;
 	}
-	
+
+	@Bean
+	public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator){
+		return new ProviderSignInUtils(connectionFactoryLocator
+				, getUsersConnectionRepository(connectionFactoryLocator));
+	}
+
 }
