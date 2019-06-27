@@ -2,12 +2,17 @@ package com.hommin.security.core.social.qq.config;
 
 import com.hommin.security.core.properties.QQProperties;
 import com.hommin.security.core.properties.SecurityProperties;
+import com.hommin.security.core.social.ConnectView;
 import com.hommin.security.core.social.qq.connect.QQOAuth2ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.social.SocialAutoConfigurerAdapter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.connect.ConnectionFactory;
+import org.springframework.web.servlet.View;
+
 
 /**
  * @author Hommin
@@ -25,4 +30,12 @@ public class SocialBeanConfig extends SocialAutoConfigurerAdapter {
         QQProperties qqProperties = securityProperties.getSocial().getQq();
         return new QQOAuth2ConnectionFactory(qqProperties.getProviderId(), qqProperties.getAppId(), qqProperties.getAppSecret());
     }
+
+    @Bean({"qqConnectView","connect/qqConnect", "connect/qqConnected"})
+    @ConditionalOnMissingBean(name = "qqConnectView")
+    public View qqConnectView() {
+        return new ConnectView();
+    }
+
+
 }

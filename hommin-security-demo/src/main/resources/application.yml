@@ -17,7 +17,7 @@ server:
 hommin:
   security:
     browser:
-      loginType: JSON
+      loginType: REDIRECT
     code:
       image:
         length: 6
