@@ -1,7 +1,7 @@
 package com.hommin.security.browser.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hommin.security.browser.support.SimpleResponse;
+import com.hommin.security.core.support.SimpleResponse;
 import com.hommin.security.core.properties.LoginType;
 import com.hommin.security.core.properties.SecurityProperties;
 import org.springframework.http.HttpStatus;

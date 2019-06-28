@@ -1,7 +1,7 @@
 package com.hommin.security.browser.logout;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hommin.security.browser.support.SimpleResponse;
+import com.hommin.security.core.support.SimpleResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.security.core.Authentication;

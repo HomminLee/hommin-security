@@ -1,6 +1,6 @@
 package com.hommin.security.browser;
 
-import com.hommin.security.browser.support.SimpleResponse;
+import com.hommin.security.core.support.SimpleResponse;
 import com.hommin.security.core.properties.SecurityConst;
 import com.hommin.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;

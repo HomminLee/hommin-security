@@ -1,7 +1,7 @@
 package com.hommin.security.browser.session;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hommin.security.browser.support.SimpleResponse;
+import com.hommin.security.core.support.SimpleResponse;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.hommin.security.browser.support;
+package com.hommin.security.core.support;
 
 /**
  * @author Hommin
