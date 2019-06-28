@@ -4,13 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hommin.security.browser.support.SimpleResponse;
 import com.hommin.security.core.properties.LoginType;
 import com.hommin.security.core.properties.SecurityProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,15 +17,15 @@ import java.io.IOException;
  * @author Hommin
  *
  */
-@Component("myAuthenticationFailureHandler")
 public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	public MyAuthenticationFailureHandler(SecurityProperties securityProperties) {
+		this.securityProperties = securityProperties;
+	}
+
 	
-	@Autowired
-	private ObjectMapper objectMapper;
+	private ObjectMapper objectMapper = new ObjectMapper();
 	
-	@Autowired
 	private SecurityProperties securityProperties;
 
 	

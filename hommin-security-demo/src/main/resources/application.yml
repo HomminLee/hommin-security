@@ -20,7 +20,9 @@ server:
 hommin:
   security:
     browser:
-      loginType: REDIRECT
+      login-type: REDIRECT
+      logout-success-url: /demo-logout.html
+      delete-cookie: JSESSIONID,_gid
     code:
       image:
         length: 4

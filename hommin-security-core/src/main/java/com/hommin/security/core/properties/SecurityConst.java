@@ -16,7 +16,7 @@ public interface SecurityConst {
 
     String DEFAULT_PARAMETER_NAME_MOBILE = "mobile";
 
-    String DEFAULT_LOGIN_PAGE="/hommin-sign-in.html";
+    String DEFAULT_LOGIN_PAGE = "/hommin-sign-in.html";
 
     /**
      * 处理验证码url前缀
@@ -36,4 +36,8 @@ public interface SecurityConst {
      */
     String DEFAULT_SESSION_INVALID_URL = "/session/invalid.html";
 
+    /**
+     * 退出登录后默认删除的cookie
+     */
+    String[] DEFAULT_DELETE_COOKIE_ARR = new String[]{"JSESSIONID"};
 }

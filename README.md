@@ -48,6 +48,17 @@ hommin.security.browser.session.maximumSessions: 设置同一个用户同一时�
 hommin.security.browser.session.maxSessionsPreventsLogin: 并发数登录超过maximumSessions时, 是否保留session存在时间长的. 默认为false, 即后登录者会将先登录者踢下线.
 
 ### 策略
-session过期失效策略: 继承InvalidSessionStrategy. 请参考: MyInvalidSessionStrategy.class和BrowserSecurityBeanConfig.class
+session过期失效策略: 继承并实现InvalidSessionStrategy. 请参考: MyInvalidSessionStrategy.class和BrowserSecurityBeanConfig.class
 
-session并发失效策略: 继承SessionInformationExpiredStrategy. 请参考ExpiredSessionStrategy.class和BrowserSecurityBeanConfig.class
+session并发失效策略: 继承并实现SessionInformationExpiredStrategy. 请参考ExpiredSessionStrategy.class和BrowserSecurityBeanConfig.class
+
+## 退出登录
+### 可选配置
+
+hommin.security.browser.logout-success-url: 退出登录成功后的跳转页面, 默认为登录页面
+
+hommin.security.browser.deleteCookie: 退出登录后要删除的cookie的数组, 格式为 cookie1,cookie2,...
+
+### 可配置策略
+
+退出登录后的处理: 继承并实现LogoutSuccessHandler. 请参考: MyLogoutSuccessHandler.class和BrowserSecurityBeanConfig.class

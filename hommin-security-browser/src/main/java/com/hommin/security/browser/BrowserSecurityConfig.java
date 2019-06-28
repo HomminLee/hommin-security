@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
@@ -52,6 +53,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private InvalidSessionStrategy invalidSessionStrategy;
     @Autowired
     private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
@@ -93,6 +96,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                     .userDetailsService(userDetailsService)
                     .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
                     .and()
+                .logout()
+                    .logoutSuccessHandler(logoutSuccessHandler)
+                    .deleteCookies(securityProperties.getBrowser().getDeleteCookie())
+                    .and()
                 .sessionManagement()
                     .invalidSessionStrategy(invalidSessionStrategy)
                     .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
@@ -110,6 +117,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                             , securityProperties.getSocial().getQq().getFilterProcessesUrl() + "/*"
                             , securityProperties.getSocial().getQq().getSignUpUrl()
                             , securityProperties.getBrowser().getSession().getSessionInvalidUrl()
+                            , securityProperties.getBrowser().getLogoutSuccessUrl()
                     )
                     .permitAll()
                     .anyRequest()
