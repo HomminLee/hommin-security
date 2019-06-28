@@ -38,7 +38,7 @@
 ## session
 ### 配置
 #### 必选
-hommin.security.browser.session.sessionInvalidUrl: session失效后的跳转. json格式请求会直接跳转url进入controller, html请求会在url后加上".html"然后跳转页面. 修改session失效可以自定义整体逻辑并使得此配置失效. 另外, 如果是并发使得session失效, 会在url后添加"?concurrency=true".
+hommin.security.browser.session.sessionInvalidUrl: session失效后的跳转页面, 必须以".html"结尾(json格式请求会直接返回一个json数据). 修改session失效策略可以自定义整体逻辑并使得此配置失效. 另外, 如果是并发使得session失效, 会在url后添加"?concurrency=true".
 
 #### 可选
 server.session.timeout: session失效时间, 单位: s. 若设置小于60, 则为60.
