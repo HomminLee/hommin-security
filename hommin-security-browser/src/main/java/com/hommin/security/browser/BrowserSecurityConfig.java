@@ -20,6 +20,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
@@ -46,6 +48,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
     @Autowired
     private SpringSocialConfigurer homminSocialSecurityConfig;
+    @Autowired
+    private InvalidSessionStrategy invalidSessionStrategy;
+    @Autowired
+    private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
@@ -68,38 +74,47 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // 添加额外的config
                 .apply(smsCodeAuthenticationSecurityConfig)
-                .and()
+                    .and()
                 // social config
                 .apply(homminSocialSecurityConfig)
-                .and()
+                    .and()
                 // 添加filter
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 // 登录配置
                 .formLogin()
-                .loginPage(SecurityConst.DEFAULT_LOGIN_UNAUTEHNTICATION_URL)
-                .loginProcessingUrl(SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_FORM)
-                .successHandler(myAuthenticationSuccessHandler)
-                .failureHandler(myAuthenticationFailureHandler)
-                .and()
+                    .loginPage(SecurityConst.DEFAULT_LOGIN_UNAUTEHNTICATION_URL)
+                    .loginProcessingUrl(SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_FORM)
+                    .successHandler(myAuthenticationSuccessHandler)
+                    .failureHandler(myAuthenticationFailureHandler)
+                    .and()
                 // remember me
                 .rememberMe()
-                .tokenRepository(persistentTokenRepository())
-                .userDetailsService(userDetailsService)
-                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-                .and()
+                    .tokenRepository(persistentTokenRepository())
+                    .userDetailsService(userDetailsService)
+                    .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                    .and()
+                .sessionManagement()
+                    .invalidSessionStrategy(invalidSessionStrategy)
+                    .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
+                    .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                    .maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())
+                    .and()
+                    .and()
                 // 路径登录要求配置
                 .authorizeRequests()
-                .antMatchers(SecurityConst.DEFAULT_LOGIN_UNAUTEHNTICATION_URL
-                        , SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_MOBILE
-                        , securityProperties.getBrowser().getLoginPage()
-                        , SecurityConst.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"
-                        , "/auth/*", "/user/register"
-                        , securityProperties.getSocial().getQq().getFilterProcessesUrl() + "/*"
-                        , securityProperties.getSocial().getQq().getSignUpUrl())
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+                    .antMatchers(SecurityConst.DEFAULT_LOGIN_UNAUTEHNTICATION_URL
+                            , SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_MOBILE
+                            , securityProperties.getBrowser().getLoginPage()
+                            , SecurityConst.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"
+                            , "/auth/*", "/user/register"
+                            , securityProperties.getSocial().getQq().getFilterProcessesUrl() + "/*"
+                            , securityProperties.getSocial().getQq().getSignUpUrl()
+                            , securityProperties.getBrowser().getSession().getSessionInvalidUrl()
+                    )
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+                    .and()
                 // csrf
                 .csrf().disable();
 

@@ -7,6 +7,8 @@ import lombok.Data;
  */
 @Data
 public class BrowserProperties {
+
+	private SecuritySessionProperties session = new SecuritySessionProperties();
 	
 	private String loginPage = SecurityConst.DEFAULT_LOGIN_PAGE;
 
