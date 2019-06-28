@@ -6,7 +6,10 @@ spring:
     password: root
 
   session:
-    store-type: none
+    store-type: REDIS
+  redis:
+    host: 10.64.4.9
+    password: rediszaq1
 
 security:
   basic:

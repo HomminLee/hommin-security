@@ -2,6 +2,7 @@ package com.hommin.security.core.validate.code;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -11,7 +12,9 @@ import java.time.LocalDateTime;
  * 2019年06月19日 4:11 PM
  */
 @Data
-public class ValidateCode {
+public class ValidateCode implements Serializable{
+    private static final long serialVersionUID = -6482231418968354764L;
+
     private String code;
 
     private LocalDateTime expireTime;

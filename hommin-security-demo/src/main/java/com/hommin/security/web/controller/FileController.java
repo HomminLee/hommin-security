@@ -1,7 +1,7 @@
 package com.hommin.security.web.controller;
 
 import com.hommin.security.dto.FileInfo;
-import org.apache.commons.io.IOUtils;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +20,7 @@ import java.io.OutputStream;
 @RequestMapping("/file")
 public class FileController {
 
-	private String folder = "/Users/zhailiang/Documents/my/muke/inaction/java/workspace/github/imooc-security-demo/src/main/java/com/imooc/web/controller";
+	private String folder = "/data";
 
 	@PostMapping
 	public FileInfo upload(MultipartFile file) throws Exception {
