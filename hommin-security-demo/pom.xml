@@ -15,9 +15,14 @@
     <version>${parent.version}</version>
 
     <dependencies>
+        <!--<dependency>-->
+            <!--<groupId>com.hommin.security</groupId>-->
+            <!--<artifactId>hommin-security-browser</artifactId>-->
+            <!--<version>${hommin.security.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.hommin.security</groupId>
-            <artifactId>hommin-security-browser</artifactId>
+            <artifactId>hommin-security-app</artifactId>
             <version>${hommin.security.version}</version>
         </dependency>
         <dependency>
