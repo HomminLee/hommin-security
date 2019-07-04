@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAut
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.social.security.SocialAuthenticationToken;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -42,8 +43,22 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
                                         Authentication authentication) throws IOException, ServletException {
 
         logger.info("登录成功");
+        // 获得header
+        String header = request.getHeader("Authorization");
+        String basicHead = "Basic ";
+        if (header == null || !header.startsWith(basicHead)) {
+            if(authentication instanceof SocialAuthenticationToken){
+                // 是第三方登录完成, 说明是直接使用spring social完成了整个第三方认证流程, 因为进过了跳转用户授权页面, 所有header会丢失
+                // 返回给前段openId, 让前段再以openId的方式进行认证并发放token
+                String openId = ((SocialAuthenticationToken) authentication).getConnection().getKey().getProviderUserId();
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write(objectMapper.writeValueAsString(openId));
+                return;
+            }
+            throw new UnapprovedClientAuthenticationException("请求头中无client信息");
+        }
 
-        OAuth2Request oAuth2Request = getOauth2Request(request);
+        OAuth2Request oAuth2Request = getOauth2Request(header);
 
         OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
         OAuth2AccessToken accessToken = tokenServices.createAccessToken(oAuth2Authentication);
@@ -53,14 +68,8 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 
     }
 
-    private OAuth2Request getOauth2Request(HttpServletRequest request) throws IOException {
-        String header = request.getHeader("Authorization");
-        String basicHead = "Basic ";
-        if (header == null || !header.startsWith(basicHead)) {
-            throw new UnapprovedClientAuthenticationException("请求头中无client信息");
-        }
-
-        String[] tokens = extractAndDecodeHeader(header, request);
+    private OAuth2Request getOauth2Request(String header) throws IOException {
+        String[] tokens = extractAndDecodeHeader(header);
         assert tokens.length == 2;
 
         String clientId = tokens[0];
@@ -78,7 +87,7 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
         return tokenRequest.createOAuth2Request(clientDetails);
     }
 
-    private String[] extractAndDecodeHeader(String header, HttpServletRequest request)
+    private String[] extractAndDecodeHeader(String header)
             throws IOException {
 
         byte[] base64Token = header.substring(6).getBytes("UTF-8");

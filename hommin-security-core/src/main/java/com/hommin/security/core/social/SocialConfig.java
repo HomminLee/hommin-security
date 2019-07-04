@@ -3,7 +3,6 @@ package com.hommin.security.core.social;
 import com.hommin.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.encrypt.Encryptors;
@@ -35,6 +34,9 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	@Autowired(required = false)
 	private ConnectionSignUp connectionSignUp;
 
+	@Autowired(required = false)
+	private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
+
 	/**
 	 * 使用数据库作为第三方账号的存储, 存储的表结构为JdbcUsersConnectionRepository.sql
 	 *
@@ -55,7 +57,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	@Bean
 	public SpringSocialConfigurer homminSocialSecurityConfig() {
 		String filterProcessesUrl = securityProperties.getSocial().getQq().getFilterProcessesUrl();
-		HomminSpringSocialConfigurer configurer = new HomminSpringSocialConfigurer(filterProcessesUrl);
+		HomminSpringSocialConfigurer configurer = new HomminSpringSocialConfigurer(filterProcessesUrl, socialAuthenticationFilterPostProcessor);
 		// 若没有注册, 跳转登录页面
 		configurer.signupUrl(securityProperties.getSocial().getQq().getSignUpUrl());
 		return configurer;
