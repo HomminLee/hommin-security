@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @author Hommin
  * 2019年06月26日 4:13 PM
  */
-//@Component
+@Component
 public class DemoConnectionSignUp implements ConnectionSignUp{
 
     @Override

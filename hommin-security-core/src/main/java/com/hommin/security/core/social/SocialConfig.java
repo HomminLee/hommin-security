@@ -35,6 +35,14 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	@Autowired(required = false)
 	private ConnectionSignUp connectionSignUp;
 
+	/**
+	 * 使用数据库作为第三方账号的存储, 存储的表结构为JdbcUsersConnectionRepository.sql
+	 *
+	 * 若想自定义数据库表, 可以自己实现UsersConnectionRepository接口
+	 *
+	 * @param connectionFactoryLocator
+	 * @return
+	 */
 	@Override
 	public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
 		JdbcUsersConnectionRepository connectionRepository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
@@ -48,6 +56,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	public SpringSocialConfigurer homminSocialSecurityConfig() {
 		String filterProcessesUrl = securityProperties.getSocial().getQq().getFilterProcessesUrl();
 		HomminSpringSocialConfigurer configurer = new HomminSpringSocialConfigurer(filterProcessesUrl);
+		// 若没有注册, 跳转登录页面
 		configurer.signupUrl(securityProperties.getSocial().getQq().getSignUpUrl());
 		return configurer;
 	}

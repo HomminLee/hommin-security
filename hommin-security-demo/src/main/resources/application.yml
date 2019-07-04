@@ -27,6 +27,7 @@ hommin:
       login-type: REDIRECT
       logout-success-url: /demo-logout.html
       delete-cookie: JSESSIONID,_gid
+      login-page: /demo-sign-in.html
     code:
       image:
         length: 4
