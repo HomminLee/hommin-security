@@ -14,7 +14,20 @@ public interface SecurityConst {
 
     String DEFAULT_LOGIN_PROCESSING_URL_MOBILE = "/authentication/mobile";
 
+    String DEFAULT_LOGIN_PROCESSING_URL_OPENID = "/authentication/openId";
+
     String DEFAULT_PARAMETER_NAME_MOBILE = "mobile";
+
+    /**
+     * openId参数名
+     */
+    String DEFAULT_PARAMETER_NAME_OPENID = "openId";
+
+    /**
+     * providerId参数名
+     */
+    String DEFAULT_PARAMETER_NAME_PROVIDERID = "providerId";
+
 
     String DEFAULT_LOGIN_PAGE = "/hommin-sign-in.html";
 

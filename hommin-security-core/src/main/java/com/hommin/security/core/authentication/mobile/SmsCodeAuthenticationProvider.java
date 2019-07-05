@@ -26,7 +26,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
             throw new UsernameNotFoundException("用户名[" + username + "]找不到");
         }
 
-        SmsCodeAuthenticationToken token = new SmsCodeAuthenticationToken(username);
+        SmsCodeAuthenticationToken token = new SmsCodeAuthenticationToken(username, authentication.getAuthorities());
 
         token.setDetails(authentication.getDetails());
 

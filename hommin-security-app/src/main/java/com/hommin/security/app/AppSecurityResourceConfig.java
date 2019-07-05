@@ -1,6 +1,7 @@
 package com.hommin.security.app;
 
 import com.hommin.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.hommin.security.core.authentication.openid.OpenIdSecurityConfig;
 import com.hommin.security.core.properties.SecurityConst;
 import com.hommin.security.core.properties.SecurityProperties;
 import com.hommin.security.core.validate.code.ValidateCodeFilter;
@@ -21,7 +22,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableResourceServer
-public class AppSecurityResourceConfig  extends ResourceServerConfigurerAdapter {
+public class AppSecurityResourceConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private SecurityProperties securityProperties;
 
@@ -36,6 +37,8 @@ public class AppSecurityResourceConfig  extends ResourceServerConfigurerAdapter 
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
     @Autowired
     private SpringSocialConfigurer homminSocialSecurityConfig;
+    @Autowired
+    private OpenIdSecurityConfig openIdSecurityConfig;
 
     @Autowired
     private ValidateCodeFilter validateCodeFilter;
@@ -45,6 +48,8 @@ public class AppSecurityResourceConfig  extends ResourceServerConfigurerAdapter 
         http
                 // 添加额外的config
                 .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+                .apply(openIdSecurityConfig)
                 .and()
                 // social config
                 .apply(homminSocialSecurityConfig)
@@ -62,6 +67,7 @@ public class AppSecurityResourceConfig  extends ResourceServerConfigurerAdapter 
                 .authorizeRequests()
                 .antMatchers(SecurityConst.DEFAULT_LOGIN_UNAUTEHNTICATION_URL
                         , SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_MOBILE
+                        , SecurityConst.DEFAULT_LOGIN_PROCESSING_URL_OPENID
                         , securityProperties.getBrowser().getLoginPage()
                         , SecurityConst.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"
                         , "/auth/*", "/user/register"
