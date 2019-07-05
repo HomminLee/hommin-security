@@ -17,4 +17,6 @@ public class SecurityProperties {
 
 	private SpringSocialProperties social = new SpringSocialProperties();
 
+	private OauthProperties oauth = new OauthProperties();
+
 }

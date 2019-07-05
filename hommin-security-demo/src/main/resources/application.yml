@@ -40,3 +40,11 @@ hommin:
         filter-processes-url: /qqLogin
         provider-id: callback.do
         sign-up-url: /demo-sign-up.html
+    oauth:
+      client:
+        - client-id: li
+          client-secret: hm
+          access-token-validate-seconds: 1234
+        - client-id: sam
+          client-secret: fuck
+          access-token-validate-seconds: 3234
