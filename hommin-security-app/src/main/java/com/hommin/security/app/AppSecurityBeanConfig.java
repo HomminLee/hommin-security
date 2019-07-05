@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -24,6 +26,12 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Configuration
 public class AppSecurityBeanConfig {
 
+
+    /**
+     * 在RedisAutoConfiguration.class中自动配置
+     */
+    @Autowired
+    private RedisConnectionFactory connectionFactory;
     @Autowired
     private SecurityProperties securityProperties;
     @Autowired
@@ -49,6 +57,12 @@ public class AppSecurityBeanConfig {
     @ConditionalOnMissingBean(UserDetailsService.class)
     public UserDetailsService userDetailsService(){
         return new UserDetailsServiceImpl(passwordEncoder);
+    }
+
+
+    @Bean
+    public RedisTokenStore redisTokenStore(){
+        return new RedisTokenStore(connectionFactory);
     }
 
 }

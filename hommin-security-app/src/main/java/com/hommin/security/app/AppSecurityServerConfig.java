@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
  * @author Hommin
@@ -29,6 +30,8 @@ public class AppSecurityServerConfig extends AuthorizationServerConfigurerAdapte
     private AuthenticationManager authenticationManager;
     @Autowired
     private SecurityProperties securityProperties;
+    @Autowired
+    private TokenStore redisTokenStore;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -59,7 +62,8 @@ public class AppSecurityServerConfig extends AuthorizationServerConfigurerAdapte
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         // 在不配置AuthorizationServerConfigurerAdapter的情况下, spring的默认实现会去找下面两个类的实例
         // 自己实现配置AuthorizationServerConfigurerAdapter后, spring不会再去默认找, 所以需要自己配置
-        endpoints.userDetailsService(userDetailsService)
+        endpoints.tokenStore(redisTokenStore)
+                .userDetailsService(userDetailsService)
                 .authenticationManager(authenticationManager);
         super.configure(endpoints);
     }
