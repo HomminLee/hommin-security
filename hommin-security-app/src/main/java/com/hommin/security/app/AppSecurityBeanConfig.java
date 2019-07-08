@@ -3,8 +3,10 @@ package com.hommin.security.app;
 import com.hommin.security.app.authentication.MyAuthenticationFailureHandler;
 import com.hommin.security.app.authentication.MyAuthenticationSuccessHandler;
 import com.hommin.security.app.authentication.UserDetailsServiceImpl;
+import com.hommin.security.app.jwt.MyJwtTokenEnhancer;
 import com.hommin.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -74,6 +77,9 @@ public class AppSecurityBeanConfig {
     @ConditionalOnProperty(prefix = "hommin.security.oauth", name = "tokeStore", havingValue = "jwt",matchIfMissing = true)
     public static class JwtTokenConfig{
 
+        @Autowired
+        private SecurityProperties securityProperties;
+
         @Bean
         public TokenStore jwtTokenStore(){
             return new JwtTokenStore(jwtAccessTokenConverter());
@@ -82,8 +88,14 @@ public class AppSecurityBeanConfig {
         @Bean
         public JwtAccessTokenConverter jwtAccessTokenConverter(){
             JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-            converter.setSigningKey("haha");
+            converter.setSigningKey(securityProperties.getOauth().getSigningKey());
             return converter;
+        }
+
+        @Bean
+        @ConditionalOnBean(TokenEnhancer.class)
+        public TokenEnhancer jwtTokenEnhancer(){
+            return new MyJwtTokenEnhancer();
         }
 
     }

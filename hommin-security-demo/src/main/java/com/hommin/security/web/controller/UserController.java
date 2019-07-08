@@ -1,6 +1,7 @@
 package com.hommin.security.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.hommin.security.core.properties.SecurityProperties;
 import com.hommin.security.dto.User;
 import com.hommin.security.dto.UserQueryCondition;
 import io.jsonwebtoken.Claims;
@@ -35,6 +36,8 @@ public class UserController {
 
 	@Autowired
 	private ProviderSignInUtils providerSignInUtils;
+	@Autowired
+	private SecurityProperties securityProperties;
 
 	@GetMapping("/me")
 	public Object getCurrentUser(Authentication user, HttpServletRequest request) throws UnsupportedEncodingException {
@@ -43,7 +46,7 @@ public class UserController {
 
 		// 注意: 必须使用UTF-8进行解码
 		Claims claims = Jwts.parser()
-				.setSigningKey("haha".getBytes("UTF-8"))
+				.setSigningKey(securityProperties.getOauth().getSigningKey().getBytes("UTF-8"))
 				.parseClaimsJws(token).getBody();
 
 		return user;

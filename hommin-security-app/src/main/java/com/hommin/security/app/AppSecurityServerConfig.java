@@ -13,8 +13,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+
+import java.util.ArrayList;
 
 /**
  * @author Hommin
@@ -32,9 +36,11 @@ public class AppSecurityServerConfig extends AuthorizationServerConfigurerAdapte
     @Autowired
     private SecurityProperties securityProperties;
     @Autowired
-    private TokenStore redisTokenStore;
+    private TokenStore tokenStore;
     @Autowired(required = false)
     private JwtAccessTokenConverter jwtAccessTokenConverter;
+    @Autowired(required = false)
+    private TokenEnhancer jwtTokenEnhancer;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -49,7 +55,7 @@ public class AppSecurityServerConfig extends AuthorizationServerConfigurerAdapte
         InMemoryClientDetailsServiceBuilder builder = clients.inMemory();
 
         OauthClientProperties[] clientProp = securityProperties.getOauth().getClient();
-        if(!ArrayUtils.isEmpty(clientProp)){
+        if (!ArrayUtils.isEmpty(clientProp)) {
             for (OauthClientProperties properties : clientProp) {
                 builder.withClient(properties.getClientId())
                         .secret(properties.getClientSecret())
@@ -66,10 +72,19 @@ public class AppSecurityServerConfig extends AuthorizationServerConfigurerAdapte
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         // 在不配置AuthorizationServerConfigurerAdapter的情况下, spring的默认实现会去找下面两个类的实例
         // 自己实现配置AuthorizationServerConfigurerAdapter后, spring不会再去默认找, 所以需要自己配置
-        endpoints.tokenStore(redisTokenStore)
+        endpoints.tokenStore(tokenStore)
                 .userDetailsService(userDetailsService)
                 .authenticationManager(authenticationManager);
-        if(jwtAccessTokenConverter != null){
+        if (jwtAccessTokenConverter != null) {
+            if (jwtTokenEnhancer != null) {
+                TokenEnhancerChain chain = new TokenEnhancerChain();
+                ArrayList<TokenEnhancer> enhancers = new ArrayList<>();
+                // 一定要注意顺序
+                enhancers.add(jwtTokenEnhancer);
+                enhancers.add(jwtAccessTokenConverter);
+                chain.setTokenEnhancers(enhancers);
+                endpoints.tokenEnhancer(chain);
+            }
             endpoints.accessTokenConverter(jwtAccessTokenConverter);
         }
         super.configure(endpoints);
