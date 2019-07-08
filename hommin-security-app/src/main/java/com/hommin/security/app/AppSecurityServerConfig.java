@@ -50,6 +50,7 @@ public class AppSecurityServerConfig extends AuthorizationServerConfigurerAdapte
             for (OauthClientProperties properties : clientProp) {
                 builder.withClient(properties.getClientId())
                         .secret(properties.getClientSecret())
+                        .authorizedGrantTypes("refresh_token", "authorization_code", "password")
                         .accessTokenValiditySeconds(properties.getAccessTokenValidateSeconds())
                         .refreshTokenValiditySeconds(2592000)
                         .scopes("all");
