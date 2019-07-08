@@ -15,4 +15,8 @@ public class OauthProperties {
 
     private OauthClientProperties[] client;
 
+    private String tokeStore;
+
+    private String signingKey = "hommin";
+
 }

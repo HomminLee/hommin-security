@@ -6,6 +6,7 @@ import com.hommin.security.app.authentication.UserDetailsServiceImpl;
 import com.hommin.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -13,6 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -61,8 +65,27 @@ public class AppSecurityBeanConfig {
 
 
     @Bean
+    @ConditionalOnProperty(prefix = "hommin.security.oauth", name = "tokeStore", havingValue = "redis")
     public RedisTokenStore redisTokenStore(){
         return new RedisTokenStore(connectionFactory);
+    }
+
+    @Configuration
+    @ConditionalOnProperty(prefix = "hommin.security.oauth", name = "tokeStore", havingValue = "jwt",matchIfMissing = true)
+    public static class JwtTokenConfig{
+
+        @Bean
+        public TokenStore jwtTokenStore(){
+            return new JwtTokenStore(jwtAccessTokenConverter());
+        }
+
+        @Bean
+        public JwtAccessTokenConverter jwtAccessTokenConverter(){
+            JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+            converter.setSigningKey("haha");
+            return converter;
+        }
+
     }
 
 }

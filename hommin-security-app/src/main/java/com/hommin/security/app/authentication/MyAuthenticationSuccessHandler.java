@@ -50,6 +50,7 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
             if(authentication instanceof SocialAuthenticationToken){
                 // 是第三方登录完成, 说明是直接使用spring social完成了整个第三方认证流程, 因为进过了跳转用户授权页面, 所有header会丢失
                 // 返回给前段openId, 让前段再以openId的方式进行认证并发放token
+                // todo 目前是直接写回一个token, 而应该是一个跳转页面, 跳转参数上携带openId
                 String openId = ((SocialAuthenticationToken) authentication).getConnection().getKey().getProviderUserId();
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().write(objectMapper.writeValueAsString(openId));

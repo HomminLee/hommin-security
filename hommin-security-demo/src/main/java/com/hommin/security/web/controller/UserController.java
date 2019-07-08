@@ -3,15 +3,17 @@ package com.hommin.security.web.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.hommin.security.dto.User;
 import com.hommin.security.dto.UserQueryCondition;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +37,15 @@ public class UserController {
 	private ProviderSignInUtils providerSignInUtils;
 
 	@GetMapping("/me")
-	public Object getCurrentUser(@AuthenticationPrincipal UserDetails user) {
+	public Object getCurrentUser(Authentication user, HttpServletRequest request) throws UnsupportedEncodingException {
+		String authorization = request.getHeader("Authorization");
+		String token = StringUtils.substringAfter(authorization, "Bearer ");
+
+		// 注意: 必须使用UTF-8进行解码
+		Claims claims = Jwts.parser()
+				.setSigningKey("haha".getBytes("UTF-8"))
+				.parseClaimsJws(token).getBody();
+
 		return user;
 	}
 

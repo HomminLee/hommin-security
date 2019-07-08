@@ -49,3 +49,5 @@ hommin:
         - client-id: sam
           client-secret: fuck
           access-token-validate-seconds: 3234
+      signing-key: lhm
+#      toke-store: redis
